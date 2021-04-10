@@ -26,19 +26,19 @@ public:
     // false - ищем по подстрокам
     // Выполняется, используя то количество потоков, которое указано в конфиге
     void HandleRequest( std::vector<std::string>& result, 
-                        std::string& word, bool findAll );
+                        const std::string& word, bool findAll ) const;
 private:
 
     // static-обертка функции однопоточного обработчика для создания объекта std::thread
     static void HandleRequestSingleCoreWrapper( std::vector<std::string>& result, 
                                                 std::vector<std::string>&& words,
-                                                std::string& word, bool findAll,
-                                                DictionaryUtils* self );
+                                                const std::string& word, bool findAll,
+                                                const DictionaryUtils* self );
 
     // Однопоточная функция-обработчик 
     void HandleRequestSingleCore( std::vector<std::string>& result, 
                                   std::vector<std::string>&& words,
-                                  std::string& word, bool findAll );
+                                  const std::string& word, bool findAll ) const;
 
     DictionaryUtils() = default;
 };

@@ -10,7 +10,7 @@ namespace utils
                 const std::string& delimiter );
 
     // Проверка на то, что строка является подпоследовательностью другой строки
-    bool IsSubSequence( std::string& sequence, std::string& subsequence );
+    bool IsSubSequence( const std::string& sequence, const std::string& subsequence );
 
     // Преобразовать вектор в строку с заданным количеством слов в строке и разделителем delimiter
     void VectorToString( const std::vector<std::string>& data,

@@ -26,7 +26,7 @@ namespace utils
         }
     }
 
-    bool IsSubSequence( std::string& sequence, std::string& subsequence, 
+    bool IsSubSequence( const std::string& sequence, const std::string& subsequence, 
                         int sequenceSize, int subsequenceSize )
     {
         if ( sequenceSize < subsequenceSize )
@@ -51,7 +51,7 @@ namespace utils
         return IsSubSequence( sequence, subsequence, sequenceSize - 1, subsequenceSize );
     }
 
-    bool IsSubSequence( std::string& sequence, std::string& subsequence )
+    bool IsSubSequence( const std::string& sequence, const std::string& subsequence )
     {
         return IsSubSequence( sequence, subsequence, sequence.size(), subsequence.size() );
     }
