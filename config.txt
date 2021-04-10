@@ -9,4 +9,5 @@ words.in.line=6
 threads.num=4
 
 # Уровень логирования, по умолчанию 1
+# 1 - debug, 2 - error, 3 - info
 log.level=1
