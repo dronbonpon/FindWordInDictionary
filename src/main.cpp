@@ -114,11 +114,11 @@ int main( int argc, char **argv )
     gtk_grid_attach( GTK_GRID( grid ), findWords, 0, 0, 1, 1 );
 
     findSubStrButton = gtk_button_new_with_label( "Find if substring" );
-    g_signal_connect( findSubStrButton, "clicked", G_CALLBACK( FindSubsequences ), NULL );
+    g_signal_connect( findSubStrButton, "clicked", G_CALLBACK( FindSubstr ), NULL );
     gtk_grid_attach( GTK_GRID( grid ), findSubStrButton, 2, 0, 1, 1 );
 
     findSubSeqButton = gtk_button_new_with_label( "Find if subsequence" );
-    g_signal_connect( findSubSeqButton, "clicked", G_CALLBACK( FindSubstr ), NULL );
+    g_signal_connect( findSubSeqButton, "clicked", G_CALLBACK( FindSubsequences ), NULL );
     gtk_grid_attach( GTK_GRID( grid ), findSubSeqButton, 2, 1, 1, 1 );
 
     gtk_widget_show_all( window );
