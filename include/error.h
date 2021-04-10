@@ -1,10 +1,8 @@
 #pragma once
 
-#include <unordered_map>
 #include <string>
-#include <optional>
 
-
+// Возможные коды ошибок
 enum class ErrorCode : std::int8_t
 {
     cantOpenConfigFile = 1,
@@ -12,6 +10,5 @@ enum class ErrorCode : std::int8_t
     cantFindLogLevel = 3,
 };
 
+// Получение сообщения об ошибке по ее коду
 std::string GetErrorMessage( ErrorCode code );
-
-void LogError( ErrorCode code, const std::string& file, int line );

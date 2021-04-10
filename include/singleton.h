@@ -1,9 +1,12 @@
 #pragma once
 
+// Шаблон класса синглтон, который реализует паттерн CRTP
 template<typename Instance>
 class Singleton
 {
 public:
+
+    // Получение единственного экземпляра синглтона
     static Instance& GetInstance()
     {
         static Instance instance;

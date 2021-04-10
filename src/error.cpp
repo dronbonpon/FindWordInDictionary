@@ -1,6 +1,7 @@
 #include "../include/error.h"
 
-#include <iostream>
+#include <unordered_map>
+#include <string>
 
 const std::unordered_map<ErrorCode, std::string> errorsMap =
 {
@@ -12,10 +13,4 @@ const std::unordered_map<ErrorCode, std::string> errorsMap =
 std::string GetErrorMessage( ErrorCode code )
 {
     return errorsMap.at( code );
-}
-
-void LogError( ErrorCode code, const std::string& file, int line )
-{
-    std::cout << GetErrorMessage( ErrorCode::cantOpenDict )
-              << "\nFile: " << file << " Line: " << line <<  std::endl;
 }

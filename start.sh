@@ -1,15 +1,26 @@
-configFilePath=$1
-
-if [ ! -d "build" ]
+if [ ! -d "debug" ]
 then
-    mkdir build
+    mkdir debug
 fi
 
-cd build
-echo "Cmake starts"
-cmake -DCMAKE_BUILD_TYPE=Debug ../src/
-echo "Cmake finished. Make starts"
-make
-echo "Make finished. Program starts"
+if [ ! -d "release" ]
+then
+    mkdir release
+fi
 
-./main ${configFilePath}
+echo "Cmake starts for debug"
+cd debug
+cmake -DCMAKE_BUILD_TYPE=Debug ../src/
+cd ../release
+echo "Cmake starts for release"
+cmake ../src/
+cd ..
+
+echo "Cmake finished. Make starts for debug"
+cd debug
+make
+cd ../release
+echo "Make starts for release"
+make
+echo "Make finished"
+cd ..

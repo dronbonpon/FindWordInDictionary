@@ -1,9 +1,10 @@
 #include "../include/initialize_dict.h"
-#include "../include/utils.h"
+#include "../include/error.h"
+#include "../include/logger.h"
 
 #include <iterator>
 #include <fstream>
-#include <iostream>
+#include <string>
 
 std::variant<std::string, ErrorCode> InitializeDict( const std::string& dictFileName, 
                                                      const std::string& dictFilePath )
@@ -15,7 +16,7 @@ std::variant<std::string, ErrorCode> InitializeDict( const std::string& dictFile
     if ( !fileStream.is_open() )
     {
         result = ErrorCode::cantOpenDict;
-        LogError( ErrorCode::cantOpenDict, __FILE__, __LINE__ );
+        LogError( GetErrorMessage( ErrorCode::cantOpenDict ) );
         return result;
     }
 
@@ -25,7 +26,7 @@ std::variant<std::string, ErrorCode> InitializeDict( const std::string& dictFile
     if ( fileData.empty() )
     {
         result = ErrorCode::cantOpenDict;
-        LogError( ErrorCode::cantOpenDict, __FILE__, __LINE__ );
+        LogError( GetErrorMessage( ErrorCode::cantOpenDict ) );
         return result;
     }
 

@@ -10,37 +10,34 @@
 
 #include <string>
 #include <variant>
-#include <iostream>
-#include <sstream>
 #include <vector>
 #include <optional>
-#include <stdexcept>
-
+#include <iostream>
 
 namespace
 {
 
 static GtkWidget *findWords;
 
-void OpenWindow( GtkWidget *calculate, gpointer data, 
-                 std::string& resultStr )
+void OpenResultWindow( GtkWidget *calculate, gpointer data, 
+                       std::string& resultStr )
 {
-    GtkWidget *window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
-    gtk_window_set_default_size (GTK_WINDOW (window), 800, 600);
+    GtkWidget *window = gtk_window_new( GTK_WINDOW_TOPLEVEL );
+    gtk_window_set_default_size ( GTK_WINDOW ( window ), 800, 600 );
 
-    GtkWidget *hbox = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 4);
+    GtkWidget *hbox = gtk_box_new( GTK_ORIENTATION_HORIZONTAL, 4 );
 
-    GtkWidget* scrolledwindow_text = gtk_scrolled_window_new(NULL, NULL);
+    GtkWidget* scrolledwindow_text = gtk_scrolled_window_new( NULL, NULL );
     GtkWidget *textview = gtk_text_view_new();
     gtk_text_buffer_set_text(
-            gtk_text_view_get_buffer(GTK_TEXT_VIEW(textview)), resultStr.c_str(), -1);
+            gtk_text_view_get_buffer(GTK_TEXT_VIEW(textview)), resultStr.c_str(), -1 );
 
-    gtk_container_add(GTK_CONTAINER(window), hbox);
+    gtk_container_add( GTK_CONTAINER( window ), hbox );
 
-    gtk_container_add(GTK_CONTAINER(scrolledwindow_text), textview);
-    gtk_box_pack_start(GTK_BOX(hbox), scrolledwindow_text, 1, 4, 10);
+    gtk_container_add( GTK_CONTAINER( scrolledwindow_text ), textview );
+    gtk_box_pack_start( GTK_BOX( hbox ), scrolledwindow_text, 1, 4, 10 );
 
-    gtk_widget_show_all(window);
+    gtk_widget_show_all( window );
 }
 
 void FindSubsequences( GtkWidget *calculate, gpointer data )
@@ -51,7 +48,7 @@ void FindSubsequences( GtkWidget *calculate, gpointer data )
     
     result::ForSubsequences( resultStr, word );
 
-    OpenWindow( calculate, data, resultStr );
+    OpenResultWindow( calculate, data, resultStr );
 }
 
 void FindSubstr( GtkWidget *calculate, gpointer data )
@@ -62,12 +59,12 @@ void FindSubstr( GtkWidget *calculate, gpointer data )
     
     result::ForSubstrings( resultStr, word );
 
-    OpenWindow( calculate, data, resultStr );
+    OpenResultWindow( calculate, data, resultStr );
 }
 
 } // nameless namespace
 
-int main(int argc, char **argv) 
+int main( int argc, char **argv ) 
 {
     if ( argc < 2 )
     {
@@ -83,16 +80,9 @@ int main(int argc, char **argv)
         std::cerr << GetErrorMessage( configInitStatus.value() ) << std::endl;
         return -1;
     }
+    LogInfo( "Config manager initialized" );
 
-    std::optional<ErrorCode> loggerInitStatus = 
-                             Logger::GetInstance().Initialize();
-    
-    if ( loggerInitStatus != std::nullopt )
-    {
-        std::cerr << GetErrorMessage( loggerInitStatus.value() ) << std::endl;
-        return -1;
-    }
-
+    Logger::GetInstance().Initialize();
     LogInfo( "Logger initialized" );
 
     std::string dictFileName = ConfigManager::GetInstance().GetDictionaryName();
@@ -106,33 +96,32 @@ int main(int argc, char **argv)
         LogError( GetErrorMessage( dictionatyInitStatus.value() ) );
         return -1;
     }
-    
-    LogInfo( "Dictionary was loaded" );
+    LogInfo( "Dictionary has loaded" );
 
-    GtkWidget *window, *grid, *findSubStrBotton, *findSubSeqButton;
-    gtk_init(&argc, &argv);
+    GtkWidget *window, *grid, *findSubStrButton, *findSubSeqButton;
+    gtk_init( &argc, &argv );
 
-    window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
-    gtk_window_set_default_size (GTK_WINDOW (window), 400, 100);
-    g_signal_connect(window, "destroy", G_CALLBACK(gtk_main_quit), NULL);
+    window = gtk_window_new( GTK_WINDOW_TOPLEVEL );
+    gtk_window_set_default_size( GTK_WINDOW ( window ), 400, 100 );
+    g_signal_connect( window, "destroy", G_CALLBACK( gtk_main_quit ), NULL );
 
-    GtkWidget *hbox = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 4);
+    GtkWidget *hbox = gtk_box_new( GTK_ORIENTATION_HORIZONTAL, 4 );
 
     grid = gtk_grid_new();
-    gtk_container_add(GTK_CONTAINER(window), grid);
+    gtk_container_add( GTK_CONTAINER( window ), grid );
 
     findWords = gtk_entry_new();
-    gtk_grid_attach(GTK_GRID(grid), findWords, 0, 0, 1, 1);
+    gtk_grid_attach( GTK_GRID( grid ), findWords, 0, 0, 1, 1 );
 
-    findSubStrBotton = gtk_button_new_with_label("Find if substring");
-    g_signal_connect(findSubStrBotton, "clicked", G_CALLBACK(FindSubsequences), NULL);
-    gtk_grid_attach(GTK_GRID(grid), findSubStrBotton, 2, 0, 1, 1);
+    findSubStrButton = gtk_button_new_with_label( "Find if substring" );
+    g_signal_connect( findSubStrButton, "clicked", G_CALLBACK( FindSubsequences ), NULL );
+    gtk_grid_attach( GTK_GRID( grid ), findSubStrButton, 2, 0, 1, 1 );
 
-    findSubSeqButton = gtk_button_new_with_label("Find if subsequence");
-    g_signal_connect(findSubSeqButton, "clicked", G_CALLBACK(FindSubstr), NULL);
-    gtk_grid_attach(GTK_GRID(grid), findSubSeqButton, 2, 1, 1, 1);
+    findSubSeqButton = gtk_button_new_with_label( "Find if subsequence" );
+    g_signal_connect( findSubSeqButton, "clicked", G_CALLBACK( FindSubstr ), NULL );
+    gtk_grid_attach( GTK_GRID( grid ), findSubSeqButton, 2, 1, 1, 1 );
 
-    gtk_widget_show_all(window);
+    gtk_widget_show_all( window );
     gtk_main();
 
     return 0;

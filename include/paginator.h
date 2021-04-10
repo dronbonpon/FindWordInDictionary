@@ -2,6 +2,7 @@
 
 #include <vector>
 
+// Выспомогательный класс диапазона итераторов
 template <typename Iterator>
 class IteratorRange {
 public:
@@ -32,6 +33,7 @@ private:
     size_t size_;
 };
 
+// Класс, который позволяет разбивать контейнер на страницы
 template <typename Iterator>
 class Paginator 
 {
@@ -70,6 +72,7 @@ public:
     }
 };
 
+// Вспомогательная функция, создающая экземпляр класса Paginator
 template <typename C>
 auto Paginate( C& c, size_t page_size )
 {

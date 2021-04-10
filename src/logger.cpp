@@ -4,19 +4,11 @@
 
 #include <iostream>
 #include <optional>
+#include <stdexcept>
 
-std::optional<ErrorCode> Logger::Initialize()
+void Logger::Initialize()
 {
-    try
-    {
-        logLevel = static_cast<LogLevel>( ConfigManager::GetInstance().GetLogLevel() );
-    }
-    catch ( ... )
-    {
-        std::optional<ErrorCode> error = ErrorCode::cantFindLogLevel;
-        return error;
-    }
-    return std::nullopt;
+    logLevel = static_cast<LogLevel>( ConfigManager::GetInstance().GetLogLevel() );
 }
 
 void Logger::LogError( const std::string& message ) const

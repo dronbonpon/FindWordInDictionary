@@ -2,6 +2,8 @@
 
 #include <thread>
 
+// Вспомогательный класс-обертка для std::thread, 
+// который реализует идиому RAII
 class ThreadRAII{
 public:
     enum class DtorAction { join, detach };

@@ -8,7 +8,6 @@
 #include <string>
 #include <mutex>
 #include <thread>
-#include <iostream>
 #include <variant>
 
 std::optional<ErrorCode> DictionaryUtils::Initialize( const std::string& dictFileName, const std::string& dictFilePath )
