@@ -16,7 +16,6 @@ std::variant<std::string, ErrorCode> InitializeDict( const std::string& dictFile
     if ( !fileStream.is_open() )
     {
         result = ErrorCode::cantOpenDict;
-        LogError( GetErrorMessage( ErrorCode::cantOpenDict ) );
         return result;
     }
 
@@ -26,7 +25,6 @@ std::variant<std::string, ErrorCode> InitializeDict( const std::string& dictFile
     if ( fileData.empty() )
     {
         result = ErrorCode::cantOpenDict;
-        LogError( GetErrorMessage( ErrorCode::cantOpenDict ) );
         return result;
     }
 
