@@ -28,7 +28,7 @@ std::optional<ErrorCode> DictionaryUtils::Initialize( const std::string& dictFil
 }
 
 void DictionaryUtils::HandleRequest( std::vector<std::string>& result, 
-                                     const std::string& word, bool findAll ) const
+                                     const std::string& word, bool findSubseq ) const
 {
     std::vector<ThreadRAII> threads;
 
@@ -39,7 +39,7 @@ void DictionaryUtils::HandleRequest( std::vector<std::string>& result,
     {
         std::vector<std::string> words = { dictPart.begin(), dictPart.end() };
         ThreadRAII oneThread( std::thread( HandleRequestSingleCoreWrapper, std::ref( result ), 
-                                           std::move( words ), std::cref( word ), findAll, this ), 
+                                           std::move( words ), std::cref( word ), findSubseq, this ), 
                                            ThreadRAII::DtorAction::join );
         
         threads.emplace_back( std::move( oneThread ) );
@@ -48,33 +48,23 @@ void DictionaryUtils::HandleRequest( std::vector<std::string>& result,
 
 void DictionaryUtils::HandleRequestSingleCoreWrapper( std::vector<std::string>& result, 
                                                       std::vector<std::string>&& words,
-                                                      const std::string& word, bool findAll,
+                                                      const std::string& word, bool findSubseq,
                                                       const DictionaryUtils* self )
 {
-    self->HandleRequestSingleCore( result, std::move( words ), word, findAll );
+    self->HandleRequestSingleCore( result, std::move( words ), word, findSubseq );
 }
 
 void DictionaryUtils::HandleRequestSingleCore( std::vector<std::string>& result, 
                                                std::vector<std::string>&& words,
-                                               const std::string& word, bool findAll ) const
+                                               const std::string& word, bool findSubseq ) const
 {
     for ( auto& a : words )
     {
-        if ( findAll )
+        if ( ( findSubseq && utils::IsSubSequence( a, word ) ) || 
+             ( !findSubseq && a.find( word ) != std::string::npos )  )
         {
-            if ( utils::IsSubSequence( a, word ) )
-            {
-                std::lock_guard<std::mutex> lock( m );
-                result.push_back( a );
-            }
-        }
-        else
-        {
-            if ( a.find( word ) != std::string::npos )
-            {
-                std::lock_guard<std::mutex> lock( m );
-                result.push_back( a );
-            }
+            std::lock_guard<std::mutex> lock( m );
+            result.push_back( a );
         }
     }
 }
